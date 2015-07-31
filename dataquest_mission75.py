@@ -48,3 +48,29 @@ titanic["FamilySize"] = titanic["SibSp"] + titanic["Parch"]
 
 # The .apply method generates a new series
 titanic["NameLength"] = titanic["Name"].apply(lambda x: len(x))
+
+import re
+
+# A function to get the title from a name.
+def get_title(name):
+    # Use a regular expression to search for a title.  Titles always consist of capital and lowercase letters, and end with a period.
+    title_search = re.search(' ([A-Za-z]+)\.', name)
+    # If the title exists, extract and return it.
+    if title_search:
+        return title_search.group(1)
+    return ""
+
+# Get all the titles and print how often each one occurs.
+titles = titanic["Name"].apply(get_title)
+print(pandas.value_counts(titles))
+
+# Map each title to an integer.  Some titles are very rare, and are compressed into the same codes as other titles.
+title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Dr": 5, "Rev": 6, "Major": 7, "Col": 7, "Mlle": 8, "Mme": 8, "Don": 9, "Lady": 10, "Countess": 10, "Jonkheer": 10, "Sir": 9, "Capt": 7, "Ms": 2}
+for k,v in title_mapping.items():
+    titles[titles == k] = v
+
+# Verify that we converted everything.
+print(pandas.value_counts(titles))
+
+# Add in the title column.
+titanic["Title"] = titles
