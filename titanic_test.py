@@ -146,9 +146,9 @@ titanic_test["NameLength"] = titanic_test["Name"].apply(lambda x: len(x))
 predictors = ["Pclass", "Cabin", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title", "FamilyId"]
 
 algorithms = [
-    #[RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=4), predictors],
+    [RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=6), predictors],
     [GradientBoostingClassifier(random_state=1, n_estimators=25, max_depth=3), predictors],
-    [LogisticRegression(random_state=1), predictors] 
+    [LogisticRegression(random_state=1), ["Pclass", "Sex", "Fare", "FamilySize", "Title", "Age", "Embarked"]] 
 ]
 
 full_predictions = []
