@@ -126,7 +126,7 @@ predictors = ["Pclass", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title",
 algorithms = [
     [RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=4), predictors],
     [GradientBoostingClassifier(random_state=1, n_estimators=25, max_depth=3), predictors],
-    [LogisticRegression(random_state=1), predictors] #["Pclass", "Sex", "Fare", "FamilySize", "Title", "Age", "Embarked"]
+    [LogisticRegression(random_state=1), predictors] 
 ]
 
 full_predictions = []
@@ -142,7 +142,7 @@ for alg, predictors in algorithms:
     print(scores.mean())
 
 # The gradient boosting classifier generates better predictions, so we weight it higher.
-predictions = (full_predictions[0] * 4 + full_predictions[1] * 4 + full_predictions[2] * 2) / 10
+predictions = (full_predictions[0] * 5 + full_predictions[1] * 4 + full_predictions[2] * 1) / 10
 
 # Map predictions to outcomes (only possible outcomes are 1 and 0)
 predictions[predictions > .5] = 1
