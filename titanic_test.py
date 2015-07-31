@@ -31,6 +31,17 @@ titanic.loc[titanic["Embarked"] == "S", "Embarked"] = 0
 titanic.loc[titanic["Embarked"] == "C", "Embarked"] = 1
 titanic.loc[titanic["Embarked"] == "Q", "Embarked"] = 2
 
+titanic["Cabin"] = titanic["Cabin"].fillna("N")
+titanic.loc[titanic["Cabin"].str.startswith("N", na=True), "Cabin"] = 0
+titanic.loc[titanic["Cabin"].str.startswith("A", na=False), "Cabin"] = 1
+titanic.loc[titanic["Cabin"].str.startswith("B", na=False), "Cabin"] = 2
+titanic.loc[titanic["Cabin"].str.startswith("C", na=False), "Cabin"] = 3
+titanic.loc[titanic["Cabin"].str.startswith("D", na=False), "Cabin"] = 4
+titanic.loc[titanic["Cabin"].str.startswith("E", na=False), "Cabin"] = 5
+titanic.loc[titanic["Cabin"].str.startswith("F", na=False), "Cabin"] = 6
+titanic.loc[titanic["Cabin"].str.startswith("G", na=False), "Cabin"] = 7
+titanic.loc[titanic["Cabin"].str.startswith("T", na=False), "Cabin"] = 8
+
 # Generating a familysize column
 titanic["FamilySize"] = titanic["SibSp"] + titanic["Parch"]
 
@@ -98,6 +109,17 @@ titanic_test.loc[titanic_test["Embarked"] == "S", "Embarked"] = 0
 titanic_test.loc[titanic_test["Embarked"] == "C", "Embarked"] = 1
 titanic_test.loc[titanic_test["Embarked"] == "Q", "Embarked"] = 2
 
+titanic_test["Cabin"] = titanic_test["Cabin"].fillna("N")
+titanic_test.loc[titanic_test["Cabin"].str.startswith("N", na=True), "Cabin"] = 0
+titanic_test.loc[titanic_test["Cabin"].str.startswith("A", na=False), "Cabin"] = 1
+titanic_test.loc[titanic_test["Cabin"].str.startswith("B", na=False), "Cabin"] = 2
+titanic_test.loc[titanic_test["Cabin"].str.startswith("C", na=False), "Cabin"] = 3
+titanic_test.loc[titanic_test["Cabin"].str.startswith("D", na=False), "Cabin"] = 4
+titanic_test.loc[titanic_test["Cabin"].str.startswith("E", na=False), "Cabin"] = 5
+titanic_test.loc[titanic_test["Cabin"].str.startswith("F", na=False), "Cabin"] = 6
+titanic_test.loc[titanic_test["Cabin"].str.startswith("G", na=False), "Cabin"] = 7
+titanic_test.loc[titanic_test["Cabin"].str.startswith("T", na=False), "Cabin"] = 8
+
 titanic_test["Fare"] = titanic_test["Fare"].fillna(titanic_test["Fare"].median())
 
 ######
@@ -121,7 +143,7 @@ titanic_test["FamilyId"] = family_ids
 # The .apply method generates a new series
 titanic_test["NameLength"] = titanic_test["Name"].apply(lambda x: len(x))
 
-predictors = ["Pclass", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title", "FamilyId"]
+predictors = ["Pclass", "Cabin", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title", "FamilyId"]
 
 algorithms = [
     [RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=4), predictors],
