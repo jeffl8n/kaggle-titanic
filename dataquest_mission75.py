@@ -217,3 +217,35 @@ titanic_test["FamilyId"] = family_ids
 
 # The .apply method generates a new series
 titanic_test["NameLength"] = titanic_test["Name"].apply(lambda x: len(x))
+
+predictors = ["Pclass", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title", "FamilyId"]
+
+algorithms = [
+    [GradientBoostingClassifier(random_state=1, n_estimators=25, max_depth=3), predictors],
+    [LogisticRegression(random_state=1), ["Pclass", "Sex", "Fare", "FamilySize", "Title", "Age", "Embarked"]]
+]
+
+full_predictions = []
+for alg, predictors in algorithms:
+    # Fit the algorithm using the full training data.
+    alg.fit(titanic[predictors], titanic["Survived"])
+    # Predict using the test dataset.  We have to convert all the columns to floats to avoid an error.
+    predictions = alg.predict_proba(titanic_test[predictors].astype(float))[:,1]
+    full_predictions.append(predictions)
+
+# The gradient boosting classifier generates better predictions, so we weight it higher.
+predictions = (full_predictions[0] * 3 + full_predictions[1]) / 4
+
+# Map predictions to outcomes (only possible outcomes are 1 and 0)
+predictions[predictions > .5] = 1
+predictions[predictions <=.5] = 0
+
+predictions = predictions.astype(int)
+
+# Create a new dataframe with only the columns Kaggle wants from the dataset.
+submission = pandas.DataFrame({
+        "PassengerId": titanic_test["PassengerId"],
+        "Survived": predictions
+    })
+
+submission.to_csv("kaggle.csv", index=False) 
