@@ -9,3 +9,7 @@ print(titanic.head(5))
 
 
 print(titanic.describe())
+
+# The titanic variable is available here.
+titanic["Age"] = titanic["Age"].fillna(titanic["Age"].median())
+
