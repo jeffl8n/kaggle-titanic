@@ -146,7 +146,7 @@ titanic_test["NameLength"] = titanic_test["Name"].apply(lambda x: len(x))
 predictors = ["Pclass", "Cabin", "Sex", "Age", "Fare", "Embarked", "FamilySize", "Title", "FamilyId"]
 
 algorithms = [
-    [RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=4), predictors],
+    #[RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=8, min_samples_leaf=4), predictors],
     [GradientBoostingClassifier(random_state=1, n_estimators=25, max_depth=3), predictors],
     [LogisticRegression(random_state=1), predictors] 
 ]
@@ -164,7 +164,7 @@ for alg, predictors in algorithms:
     print(scores.mean())
 
 # The gradient boosting classifier generates better predictions, so we weight it higher.
-predictions = (full_predictions[0] * 5 + full_predictions[1] * 4 + full_predictions[2] * 1) / 10
+predictions = (full_predictions[0] * 3 + full_predictions[1] * 1) / 4
 
 # Map predictions to outcomes (only possible outcomes are 1 and 0)
 predictions[predictions > .5] = 1
