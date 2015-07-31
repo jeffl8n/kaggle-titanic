@@ -56,3 +56,17 @@ for train, test in kf:
     # We can now make predictions on the test fold
     test_predictions = alg.predict(titanic[predictors].iloc[test,:])
     predictions.append(test_predictions)
+
+import numpy as np
+
+# The predictions are in three separate numpy arrays.  Concatenate them into one.  
+# We concatenate them on axis 0, as they only have one axis.
+predictions = np.concatenate(predictions, axis=0)
+
+# Map predictions to outcomes (only possible outcomes are 1 and 0)
+predictions[predictions > .5] = 1
+predictions[predictions <=.5] = 0
+
+accuracy = sum(predictions[predictions == titanic["Survived"]]) / len(predictions)
+
+print(accuracy)
