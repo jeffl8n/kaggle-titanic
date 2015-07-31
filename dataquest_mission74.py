@@ -13,3 +13,11 @@ print(titanic.describe())
 # The titanic variable is available here.
 titanic["Age"] = titanic["Age"].fillna(titanic["Age"].median())
 
+# Find all the unique genders -- the column appears to contain only male and female.
+print(titanic["Sex"].unique())
+
+# Replace all the occurences of male with the number 0.
+titanic.loc[titanic["Sex"] == "male", "Sex"] = 0
+
+# Replace all the occurences of female with the number 1.
+titanic.loc[titanic["Sex"] == "female", "Sex"] = 1
