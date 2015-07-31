@@ -176,3 +176,44 @@ predictions = np.concatenate(predictions, axis=0)
 # Compute accuracy by comparing to the training data.
 accuracy = sum(predictions[predictions == titanic["Survived"]]) / len(predictions)
 print(accuracy)
+
+######
+#Import titanic_test
+
+titanic_test = pandas.read_csv("titanic_test.csv")
+
+titanic_test["Age"] = titanic_test["Age"].fillna(titanic["Age"].median())
+
+titanic_test.loc[titanic_test["Sex"] == "male", "Sex"] = 0
+titanic_test.loc[titanic_test["Sex"] == "female", "Sex"] = 1
+
+titanic_test["Embarked"] = titanic_test["Embarked"].fillna("S")
+
+titanic_test.loc[titanic_test["Embarked"] == "S", "Embarked"] = 0
+titanic_test.loc[titanic_test["Embarked"] == "C", "Embarked"] = 1
+titanic_test.loc[titanic_test["Embarked"] == "Q", "Embarked"] = 2
+
+titanic_test["Fare"] = titanic_test["Fare"].fillna(titanic_test["Fare"].median())
+
+######
+
+# First, we'll add titles to the test set.
+titles = titanic_test["Name"].apply(get_title)
+# We're adding the Dona title to the mapping, because it's in the test set, but not the training set
+title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Dr": 5, "Rev": 6, "Major": 7, "Col": 7, "Mlle": 8, "Mme": 8, "Don": 9, "Lady": 10, "Countess": 10, "Jonkheer": 10, "Sir": 9, "Capt": 7, "Ms": 2, "Dona": 10}
+for k,v in title_mapping.items():
+    titles[titles == k] = v
+titanic_test["Title"] = titles
+# Check the counts of each unique title.
+print(pandas.value_counts(titanic_test["Title"]))
+
+# Now, we add the family size column.
+titanic_test["FamilySize"] = titanic_test["SibSp"] + titanic_test["Parch"]
+
+# Now we can add family ids.
+family_ids = titanic_test.apply(get_family_id, axis=1)
+family_ids[titanic_test["FamilySize"] < 3] = -1
+titanic_test["FamilyId"] = family_ids
+
+# The .apply method generates a new series
+titanic_test["NameLength"] = titanic_test["Name"].apply(lambda x: len(x))
