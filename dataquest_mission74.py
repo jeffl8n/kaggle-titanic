@@ -96,3 +96,20 @@ titanic_test.loc[titanic_test["Embarked"] == "C", "Embarked"] = 1
 titanic_test.loc[titanic_test["Embarked"] == "Q", "Embarked"] = 2
 
 titanic_test["Fare"] = titanic_test["Fare"].fillna(titanic_test["Fare"].median())
+
+# Initialize the algorithm class
+alg = LogisticRegression(random_state=1)
+
+# Train the algorithm using all the training data
+alg.fit(titanic[predictors], titanic["Survived"])
+
+# Make predictions using the test set.
+predictions = alg.predict(titanic_test[predictors])
+
+# Create a new dataframe with only the columns Kaggle wants from the dataset.
+submission = pandas.DataFrame({
+        "PassengerId": titanic_test["PassengerId"],
+        "Survived": predictions
+    })
+
+submission.to_csv("kaggle.csv", index=False) 
