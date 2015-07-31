@@ -164,7 +164,7 @@ for alg, predictors in algorithms:
     print(scores.mean())
 
 # The gradient boosting classifier generates better predictions, so we weight it higher.
-predictions = (full_predictions[0] * 3 + full_predictions[1] * 1) / 4
+predictions = (full_predictions[0] * 5 + full_predictions[1] * 4 + full_predictions[2] * 1) / 10
 
 # Map predictions to outcomes (only possible outcomes are 1 and 0)
 predictions[predictions > .5] = 1
