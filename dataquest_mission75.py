@@ -42,3 +42,9 @@ alg = RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split
 scores = cross_validation.cross_val_score(alg, titanic[predictors], titanic["Survived"], cv=3)
 # Take the mean of the scores (because we have one for each fold)
 print(scores.mean())
+
+# Generating a familysize column
+titanic["FamilySize"] = titanic["SibSp"] + titanic["Parch"]
+
+# The .apply method generates a new series
+titanic["NameLength"] = titanic["Name"].apply(lambda x: len(x))
