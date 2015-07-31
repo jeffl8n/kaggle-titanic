@@ -35,3 +35,10 @@ alg = RandomForestClassifier(random_state=1, n_estimators=10, min_samples_split=
 scores = cross_validation.cross_val_score(alg, titanic[predictors], titanic["Survived"], cv=3)
 # Take the mean of the scores (because we have one for each fold)
 print(scores.mean())
+
+alg = RandomForestClassifier(random_state=1, n_estimators=150, min_samples_split=4, min_samples_leaf=2)
+
+# Compute the accuracy score for all the cross validation folds.  (much simpler than what we did before!)
+scores = cross_validation.cross_val_score(alg, titanic[predictors], titanic["Survived"], cv=3)
+# Take the mean of the scores (because we have one for each fold)
+print(scores.mean())
